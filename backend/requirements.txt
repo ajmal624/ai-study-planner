@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 Django>=5.0,<6.0
 djangorestframework>=3.15
 djangorestframework-simplejwt>=5.3
-=======
-Django>=5.0,<6.0
-djangorestframework>=3.15
-djangorestframework-simplejwt>=5.3
->>>>>>> 6db5b69cab8c264b937baaa36976fd5ad75a9c2b
 django-cors-headers>=4.3
+gunicorn
+dj-database-url
+psycopg2-binary
+whitenoise
