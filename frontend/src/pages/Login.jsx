@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,10 +20,14 @@ export default function Login() {
 
     try {
       if (registerMode) {
-        await api.post("auth/register/", form);
+        await api.post("register/", {
+          username: form.username,
+          email: form.email,
+          password: form.password,
+        });
       }
 
-      const response = await api.post("auth/token/", {
+      const response = await api.post("token/", {
         username: form.username,
         password: form.password,
       });
@@ -33,7 +36,8 @@ export default function Login() {
       localStorage.setItem("refresh_token", response.data.refresh);
 
       navigate("/");
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError("Unable to continue. Check your details and try again.");
     }
   }
@@ -93,100 +97,4 @@ export default function Login() {
       </form>
     </div>
   );
-=======
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import api from "../api";
-
-export default function Login() {
-  const navigate = useNavigate();
-  const [registerMode, setRegisterMode] = useState(false);
-  const [error, setError] = useState("");
-
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  async function submit(event) {
-    event.preventDefault();
-    setError("");
-
-    try {
-      if (registerMode) {
-        await api.post("auth/register/", form);
-      }
-
-      const response = await api.post("auth/token/", {
-        username: form.username,
-        password: form.password,
-      });
-
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-
-      navigate("/");
-    } catch {
-      setError("Unable to continue. Check your details and try again.");
-    }
-  }
-
-  return (
-    <div className="auth-page">
-      <form className="auth-card" onSubmit={submit}>
-        <h1>StudyFlow</h1>
-        <p>{registerMode ? "Create your account" : "Welcome back"}</p>
-
-        {error && <div className="message error">{error}</div>}
-
-        <input
-          required
-          placeholder="Username"
-          value={form.username}
-          onChange={(event) =>
-            setForm({ ...form, username: event.target.value })
-          }
-        />
-
-        {registerMode && (
-          <input
-            required
-            type="email"
-            placeholder="Email address"
-            value={form.email}
-            onChange={(event) =>
-              setForm({ ...form, email: event.target.value })
-            }
-          />
-        )}
-
-        <input
-          required
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(event) =>
-            setForm({ ...form, password: event.target.value })
-          }
-        />
-
-        <button type="submit">
-          {registerMode ? "Create account" : "Sign in"}
-        </button>
-
-        <button
-          className="text-button"
-          type="button"
-          onClick={() => setRegisterMode(!registerMode)}
-        >
-          {registerMode
-            ? "Already have an account? Sign in"
-            : "New user? Create an account"}
-        </button>
-      </form>
-    </div>
-  );
->>>>>>> 6db5b69cab8c264b937baaa36976fd5ad75a9c2b
 }
